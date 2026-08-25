@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { StateAqi, getAqiColor, getAqiLevel } from '../data/indiaAqi';
+import { getAqiColor, getAqiLevel } from '../data/indiaAqi';
+import type { StateAqi } from '../data/indiaAqi';
 
 interface Props {
   states: StateAqi[];
