@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { StateAqi, getAqiLevel, getAqiColor } from '../data/indiaAqi';
+import { getAqiLevel, getAqiColor } from '../data/indiaAqi';
+import type { StateAqi } from '../data/indiaAqi';
 import { AqiGauge } from './AqiGauge';
 import { CigaretteBar } from './CigaretteBar';
 import { HistoricalChart } from './HistoricalChart';
