@@ -2,24 +2,31 @@
 
 Cyberpunk / CRT-styled Air Quality Index dashboard for India — sample state data, cigarette-equivalent metric, and 14-day history.
 
-> From the design notes in *Live AQI App - India/country (with historical data ?)*.
+**Live site (GitHub Pages):** [https://chandanmahapatra.github.io/live-aqi-india/](https://chandanmahapatra.github.io/live-aqi-india/)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ChandanMahapatra/live-aqi-india)
+> Enable Pages once (below) if the link 404s on first visit.
 
 ## Features
 
-- **Spatial view** — interactive state nodes with AQI-colored glow and animated highlight
-- **Top polluted ranking** — sorted list of worst states
-- **State detail panel**
-  - CPCB-style AQI gauge + pollutant breakdown (PM2.5, PM10, NO₂, SO₂, O₃, CO)
-  - **Cigarette bars** — visual “how many cigarettes would this air equal?”
-  - 14-day historical area chart
-- **CRT overlay** — scanlines, vignette, subtle flicker
-- **National average** + cigarette equivalent in the top HUD
+- Spatial map of states with AQI-colored glow
+- Top polluted ranking
+- State detail: gauge, pollutants, cigarette bars, 14-day chart
+- CRT scanlines / HUD aesthetic
+- Sample data only (no paid API)
 
-Sample data only (no paid API required). Swap in OpenAQ / data.gov.in / WAQI later if you want live feeds.
+## View the site
 
-## Quick start (local)
+### GitHub Pages (recommended, free)
+
+1. Open **Settings → Pages** on the repo:  
+   https://github.com/ChandanMahapatra/live-aqi-india/settings/pages
+2. Under **Build and deployment → Source**, choose **GitHub Actions**
+3. Wait for the workflow **Deploy to GitHub Pages** (Actions tab) to finish (~1–2 min)
+4. Open: **https://chandanmahapatra.github.io/live-aqi-india/**
+
+Pushes to `main` auto-redeploy.
+
+### Local
 
 ```bash
 git clone https://github.com/ChandanMahapatra/live-aqi-india.git
@@ -28,61 +35,15 @@ npm install
 npm run dev
 ```
 
-```bash
-npm run build
-npm run preview
-```
+### Vercel (optional)
 
-## Deploy to Vercel (previews + production)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ChandanMahapatra/live-aqi-india)
 
-### Option A — one-click
-
-1. Open: [vercel.com/new/clone?repository-url=https://github.com/ChandanMahapatra/live-aqi-india](https://vercel.com/new/clone?repository-url=https://github.com/ChandanMahapatra/live-aqi-india)
-2. Import the repo under your Vercel account
-3. Framework preset is **Vite** (already set in `vercel.json`)
-4. Deploy — you get a production URL + PR preview deployments automatically
-
-### Option B — CLI
-
-```bash
-npm i -g vercel
-vercel          # link project, first deploy
-vercel --prod   # production
-```
-
-Every push to `main` builds production. Every PR gets a **preview URL**.
-
-### Option C — Vercel dashboard
-
-1. [vercel.com/new](https://vercel.com/new) → Import Git Repository
-2. Select `ChandanMahapatra/live-aqi-india`
-3. Leave build settings as detected (Vite / `npm run build` / `dist`)
-4. Deploy
-
-`vercel.json` already configures SPA rewrites so client routing works.
-
-## Data
-
-Illustrative sample for 20 states/UTs. Helpers:
-
-- `getAqiLevel` / `getAqiColor` — CPCB-style bands
-- `aqiToCigarettes` — ~22 µg/m³ PM2.5 ≈ 1 cig/day heuristic (intuition only, not medical advice)
-
-To go live later: replace `src/data/indiaAqi.ts` with fetches from OpenAQ, data.gov.in CPCB, or WAQI.
-
-## Design references
-
-- [timezoneglobe.com](https://www.timezoneglobe.com/)
-- [thegridcn.com](https://thegridcn.com/)
-- [atlas-olive-sigma.vercel.app](https://atlas-olive-sigma.vercel.app/)
-- [Territory Studio — Blade Runner 2049](https://territorystudio.com/project/blade-runner-2049/)
-- [hud-crt](https://github.com/krzysztoff1/hud-crt)
+Note: this repo uses `base: '/live-aqi-india/'` for Pages. For a Vercel root domain, change `base` to `'/'` in `vite.config.ts` (or use an env-based base).
 
 ## Stack
 
-- React 19 + TypeScript + Vite 8
-- Tailwind CSS v4
-- Framer Motion · Recharts · Lucide
+React 19 · TypeScript · Vite · Tailwind v4 · Framer Motion · Recharts · Lucide
 
 ## License
 
