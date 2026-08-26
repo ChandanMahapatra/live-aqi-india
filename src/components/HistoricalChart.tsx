@@ -7,6 +7,7 @@ import {
   YAxis,
   ReferenceLine,
 } from 'recharts';
+import { useReducedMotion } from 'framer-motion';
 import { getAqiColor } from '../data/indiaAqi';
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export function HistoricalChart({ history, currentAqi }: Props) {
+  const prefersReducedMotion = useReducedMotion();
   const data = history.map((aqi, i) => ({
     day: `D-${history.length - 1 - i}`,
     aqi,
@@ -64,6 +66,7 @@ export function HistoricalChart({ history, currentAqi }: Props) {
             strokeWidth={2}
             fill="url(#aqiFill)"
             animationDuration={800}
+            isAnimationActive={!prefersReducedMotion}
           />
         </AreaChart>
       </ResponsiveContainer>

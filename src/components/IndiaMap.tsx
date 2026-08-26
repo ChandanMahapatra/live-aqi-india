@@ -57,7 +57,16 @@ export function IndiaMap({ states, selectedId, onSelect }: Props) {
             <g
               key={s.id}
               className="cursor-pointer state-highlight"
+              role="button"
+              tabIndex={0}
+              aria-label={`${s.name}: AQI ${s.aqi}, ${level}`}
               onClick={() => onSelect(s.id)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onSelect(s.id);
+                }
+              }}
               style={{ color }}
             >
               <motion.circle

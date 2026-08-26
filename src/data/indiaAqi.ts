@@ -42,16 +42,9 @@ export function getAqiColor(aqi: number): string {
   return '#d50000';
 }
 
-/** ~22 µg/m³ PM2.5 ≈ 1 cigarette/day (public-health heuristic) */
-export function aqiToCigarettes(aqi: number): number {
-  let pm25Approx: number;
-  if (aqi <= 50) pm25Approx = aqi * 0.6;
-  else if (aqi <= 100) pm25Approx = 30 + (aqi - 50) * 0.6;
-  else if (aqi <= 200) pm25Approx = 60 + (aqi - 100) * 0.9;
-  else if (aqi <= 300) pm25Approx = 150 + (aqi - 200) * 1.0;
-  else if (aqi <= 400) pm25Approx = 250 + (aqi - 300) * 1.0;
-  else pm25Approx = 350 + (aqi - 400) * 1.5;
-  return Math.max(0, Math.round((pm25Approx / 22) * 10) / 10);
+/** ~22 µg/m³ PM2.5 ≈ 1 cigarette/day for sustained 24-hour exposure. */
+export function pm25ToCigarettes(pm25: number): number {
+  return Math.max(0, Math.round((pm25 / 22) * 10) / 10);
 }
 
 function hist(base: number): number[] {
@@ -83,6 +76,10 @@ export const INDIA_STATES: StateAqi[] = [
   { id: 'UK', name: 'Uttarakhand', code: 'UK', aqi: 72, pm25: 32, pm10: 58, no2: 12, so2: 5, o3: 30, co: 0.5, dominant: 'PM2.5', lastUpdated: '2026-08-25T09:35:00+05:30', x: 50, y: 22, history: hist(70) },
 ];
 
-export const NATIONAL_AVG_AQI = Math.round(
-  INDIA_STATES.reduce((sum, s) => sum + s.aqi, 0) / INDIA_STATES.length
+/** Unweighted averages across the simulated regions; not official national figures. */
+export const DEMO_AVG_AQI = Math.round(
+  INDIA_STATES.reduce((sum, state) => sum + state.aqi, 0) / INDIA_STATES.length
 );
+
+export const DEMO_AVG_PM25 =
+  INDIA_STATES.reduce((sum, state) => sum + state.pm25, 0) / INDIA_STATES.length;
