@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
-import { aqiToCigarettes } from '../data/indiaAqi';
+import { pm25ToCigarettes } from '../data/indiaAqi';
 
 interface Props {
-  aqi: number;
+  pm25: number;
   maxCigs?: number;
 }
 
-export function CigaretteBar({ aqi, maxCigs = 20 }: Props) {
-  const cigs = aqiToCigarettes(aqi);
+export function CigaretteBar({ pm25, maxCigs = 20 }: Props) {
+  const cigs = pm25ToCigarettes(pm25);
   const filled = Math.min(cigs, maxCigs);
   const full = Math.floor(filled);
   const partial = filled - full;
@@ -71,8 +71,8 @@ export function CigaretteBar({ aqi, maxCigs = 20 }: Props) {
       </div>
 
       <p className="text-[10px] opacity-50 leading-relaxed">
-        Heuristic: ~22 µg/m³ PM2.5 ≈ 1 cigarette/day (public health rule-of-thumb).
-        Not a medical claim — for intuition only.
+        Heuristic: measured PM2.5 ÷ 22, representing sustained 24-hour exposure.
+        Illustrative mortality-risk comparison only — not a medical claim.
       </p>
     </div>
   );

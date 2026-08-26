@@ -21,7 +21,7 @@ export function StateDetail({ state }: Props) {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -12 }}
           transition={{ duration: 0.25 }}
-          className="h-full flex flex-col gap-4 overflow-y-auto pr-1"
+          className="lg:h-full flex flex-col gap-4 overflow-visible lg:overflow-y-auto pr-1"
         >
           <div>
             <div className="flex items-center justify-between">
@@ -37,7 +37,7 @@ export function StateDetail({ state }: Props) {
               </span>
             </div>
             <p className="text-[10px] opacity-50 mt-1">
-              Updated {formatTime(state.lastUpdated)} · Dominant: {state.dominant}
+              Simulated snapshot {formatTime(state.lastUpdated)} · Dominant: {state.dominant}
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export function StateDetail({ state }: Props) {
           </div>
 
           <div className="hud-panel p-3 rounded">
-            <CigaretteBar aqi={state.aqi} />
+            <CigaretteBar pm25={state.pm25} />
           </div>
 
           <div className="hud-panel p-3 rounded flex-1 min-h-[160px]">
@@ -94,7 +94,7 @@ export function StateDetail({ state }: Props) {
           <Droplets size={32} className="opacity-40" />
           <p className="text-sm tracking-widest uppercase">Select a state</p>
           <p className="text-xs max-w-[200px]">
-            Click any node on the map to inspect live AQI, pollutants & history.
+            Select any node to inspect simulated AQI, pollutants and history.
           </p>
         </motion.div>
       )}

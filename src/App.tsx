@@ -1,11 +1,12 @@
-import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import { motion, MotionConfig } from 'framer-motion';
 import {
   INDIA_STATES,
-  NATIONAL_AVG_AQI,
+  DEMO_AVG_AQI,
+  DEMO_AVG_PM25,
   getAqiColor,
   getAqiLevel,
-  aqiToCigarettes,
+  pm25ToCigarettes,
 } from './data/indiaAqi';
 import { IndiaMap } from './components/IndiaMap';
 import { StateDetail } from './components/StateDetail';
@@ -13,6 +14,12 @@ import { Activity, MapPin, Radio, AlertTriangle } from 'lucide-react';
 
 function App() {
   const [selectedId, setSelectedId] = useState<string | null>('DL');
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
   const selected = useMemo(
     () => INDIA_STATES.find((s) => s.id === selectedId) ?? null,
     [selectedId]
@@ -23,46 +30,47 @@ function App() {
     []
   );
 
-  const nationalCigs = aqiToCigarettes(NATIONAL_AVG_AQI);
+  const demoCigs = pm25ToCigarettes(DEMO_AVG_PM25);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden crt-flicker">
+    <MotionConfig reducedMotion="user">
+    <div className="relative w-full min-h-dvh lg:h-dvh lg:overflow-hidden crt-flicker">
       <div className="crt-overlay" />
       <div className="crt-vignette" />
 
-      <div className="relative z-10 h-full flex flex-col p-3 md:p-4 gap-3">
+      <div className="relative z-10 min-h-dvh lg:h-full flex flex-col p-3 md:p-4 gap-3">
         <header className="hud-panel flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <Radio size={16} className="glow-cyan animate-pulse" />
               <h1 className="text-sm md:text-base tracking-[0.2em] uppercase glow">
-                Live AQI // India
+                AQI Monitor // India
               </h1>
             </div>
             <span className="hidden sm:inline text-[10px] opacity-40 tracking-widest">
-              CPCB-style · sample data · historical 14d
+              SIMULATED DATA · CPCB-STYLE CATEGORIES · 14D DEMO
             </span>
           </div>
 
           <div className="flex items-center gap-4 text-xs">
             <div className="flex items-center gap-1.5">
               <Activity size={12} className="opacity-60" />
-              <span className="opacity-60">NAT AVG</span>
+              <span className="opacity-60">DEMO AVG</span>
               <span
                 className="font-bold"
-                style={{ color: getAqiColor(NATIONAL_AVG_AQI) }}
+                style={{ color: getAqiColor(DEMO_AVG_AQI) }}
               >
-                {NATIONAL_AVG_AQI}
+                {DEMO_AVG_AQI}
               </span>
-              <span className="opacity-40">({getAqiLevel(NATIONAL_AVG_AQI)})</span>
+              <span className="opacity-40">({getAqiLevel(DEMO_AVG_AQI)})</span>
             </div>
             <div className="hidden md:flex items-center gap-1.5">
               <span className="opacity-60">≈</span>
-              <span className="glow-amber font-bold">{nationalCigs.toFixed(1)}</span>
+              <span className="glow-amber font-bold">{demoCigs.toFixed(1)}</span>
               <span className="opacity-50">cig/day</span>
             </div>
             <div className="text-[10px] opacity-40 tracking-wider">
-              {new Date().toLocaleString('en-IN', {
+              {now.toLocaleString('en-IN', {
                 timeZone: 'Asia/Kolkata',
                 hour: '2-digit',
                 minute: '2-digit',
@@ -111,7 +119,7 @@ function App() {
             <div className="border-t border-white/10 p-3 text-[10px] opacity-50 space-y-1">
               <p className="flex items-center gap-1.5">
                 <MapPin size={10} />
-                {INDIA_STATES.length} states / UTs tracked
+                {INDIA_STATES.length} regions represented
               </p>
               <p>
                 Sample data for demo. Swap in OpenAQ / data.gov.in / WAQI when ready.
@@ -123,10 +131,10 @@ function App() {
             <div className="hud-panel-header px-3 py-2 flex items-center justify-between">
               <span className="flex items-center gap-2">
                 <MapPin size={12} />
-                Spatial view
+                Approximate locations
               </span>
               <span className="text-[9px] opacity-40 tracking-widest">
-                CLICK NODE · ANIMATED HIGHLIGHT
+                SELECT NODE · SIMULATED VALUES
               </span>
             </div>
             <div className="flex-1 relative">
@@ -138,7 +146,7 @@ function App() {
             </div>
           </main>
 
-          <aside className="lg:col-span-4 hud-panel rounded p-3 min-h-0 overflow-hidden">
+          <aside className="lg:col-span-4 hud-panel rounded p-3 min-h-0 overflow-visible lg:overflow-hidden">
             <StateDetail state={selected} />
           </aside>
         </div>
@@ -172,6 +180,7 @@ function App() {
         animate={{ opacity: 0.3 }}
       />
     </div>
+    </MotionConfig>
   );
 }
 

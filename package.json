@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:pages": "vite build",
+    "build:pages": "npm run check && vite build",
+    "check": "npm run lint && tsc -b",
     "lint": "oxlint",
     "preview": "vite preview"
   },
