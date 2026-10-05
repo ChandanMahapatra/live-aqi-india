@@ -1,0 +1,12 @@
+# Sources and licenses
+
+- Air-quality data: [Open-Meteo](https://open-meteo.com/en/docs/air-quality-api), based on [Copernicus CAMS](https://atmosphere.copernicus.eu/). Data is CC BY 4.0. The keyless hosted API is free for noncommercial use under [Open-Meteo's terms](https://open-meteo.com/en/terms), with request limits. The app must remain noncommercial under this API tier.
+- India map: [geoBoundaries gbOpen IND ADM1](https://www.geoboundaries.org/api/current/gbOpen/IND/ADM1/), boundary ID `IND-ADM1-1811400`. Source: DataMeet India community / Election Commission of India. License: [CC BY 2.5 India](https://creativecommons.org/licenses/by/2.5/in/), as reported in the dataset metadata. [Original dataset](https://github.com/wmgeolab/geoBoundaries/blob/9469f09/releaseData/gbOpen/IND/ADM1/geoBoundaries-IND-ADM1.geojson). `scripts/generate-map.py` transforms the polygons into square dots and simplified state outlines; these are modified data. Boundaries follow the source dataset and are not an official political map.
+- Geist Mono and Geist Pixel: Vercel / basement.studio, [Geist font project](https://github.com/vercel/geist-font). SIL Open Font License 1.1; bundled in `public/licenses/geist.txt`. Fonts are bundled locally.
+- Search icon: [Pixelarticons](https://github.com/halfmage/pixelarticons), MIT; license in `public/licenses/pixelarticons.txt`. Icon color is modified for this UI.
+- Cigarette comparison: [Berkeley Earth, Air Pollution and Cigarette Equivalence](https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/), Richard A. Muller and Elizabeth A. Muller. The approximate comparison is one cigarette/day for 22 µg/m³ of PM2.5 daily exposure. The app uses the last complete 24-hour modeled mean. This is an illustrative population-level comparison, not cigarettes actually smoked, a personal dose, or an individual health prediction.
+- Visual inspiration: [AmberConsole](https://github.com/DutchDiederik/AmberConsole). The app's CSS is independently implemented and does not bundle AmberConsole source.
+- Initial design concepts were generated with GPT Image and refined by a human. The screenshot in `docs/` shows the implemented interface.
+- Cigarette SVG: original pixel artwork authored for this app at the user's request.
+
+- Current interface font: [Departure Mono](https://departuremono.com/), Helena Zhang / Robby McCorkell. SIL Open Font License 1.1; license in `public/licenses/departure-mono.txt`. Locally bundled official WOFF2. Previous Geist assets remain only as unused historical files.
