@@ -21,8 +21,8 @@ function CityMap({ selected, onSelect, summary, metric, onMetric }) {
   const ncrPoint = project(ncrCities[0]);
   const isNcr = ncrCities.some(city=>city.id===selected.id);
   useEffect(()=>{if(ncrOpen)firstNcrChoice.current?.focus();},[ncrOpen]);
-  useEffect(()=>setNcrOpen(false),[selected.id]);
-  const closeNcr = () => {setNcrOpen(false);ncrTrigger.current?.focus();};
+  useEffect(()=>{if(selected.id!=='delhi')setNcrOpen(selected.id==='gurugram'||selected.id==='faridabad');},[selected.id]);
+  const closeNcr = () => {setNcrOpen(false);onSelect('delhi');ncrTrigger.current?.focus();};
   const chosen = project(selected);
   const labelWidth = Math.max(72, selected.name.length * 8 + 16);
   const labelX = Math.min(chosen.x + 17, 795 - labelWidth);
@@ -58,14 +58,15 @@ function CityMap({ selected, onSelect, summary, metric, onMetric }) {
         <rect className="label-back" x={labelX} y={chosen.y-13} width={labelWidth} height="26"/>
         <text x={labelX+8} y={chosen.y+4}>{selected.name.toUpperCase()}</text>
       </g>
-      <g ref={ncrTrigger} role="button" tabIndex="0" className="city-map-target ncr-marker" aria-label="Choose Delhi NCR city" aria-expanded={ncrOpen} aria-controls="ncr-chooser" onClick={()=>setNcrOpen(value=>!value)} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();setNcrOpen(value=>!value);}}}>
+      <g ref={ncrTrigger} role="button" tabIndex="0" className="city-map-target ncr-marker" aria-label="Choose Delhi NCR city" aria-expanded={ncrOpen} aria-controls="ncr-chooser" onClick={()=>{if(ncrOpen)closeNcr();else setNcrOpen(true);}} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();if(ncrOpen)closeNcr();else setNcrOpen(true);}}}>
         <title>Delhi NCR: Delhi, Gurugram, Faridabad</title>
         {isNcr && <circle className="selection-frame" cx={ncrPoint.x} cy={ncrPoint.y} r="12"/>}
         <circle cx={ncrPoint.x} cy={ncrPoint.y} r="8"/>
         <text x={ncrPoint.x} y={ncrPoint.y+3} textAnchor="middle">3</text>
       </g>
     </svg>
-    {ncrOpen && <div id="ncr-chooser" className="map-chooser" role="group" aria-label="Delhi NCR cities" onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();closeNcr();}}}><span>Delhi NCR · nearby cities</span>{ncrCities.map((city,index)=><button ref={index===0?firstNcrChoice:null} key={city.id} type="button" onClick={()=>{onSelect(city.id);closeNcr();}}>{city.name}</button>)}<button type="button" onClick={closeNcr}>Close</button></div>}
+    {ncrOpen && <div id="ncr-chooser" className="map-chooser" role="group" aria-label="Delhi NCR cities" onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();closeNcr();}}}><div className="chooser-heading"><span>Delhi NCR · nearby cities</span><button className="chooser-close" type="button" aria-label="Close Delhi NCR chooser" onClick={closeNcr}>×</button></div>{ncrCities.map((city,index)=><button ref={index===0?firstNcrChoice:null} key={city.id} type="button" aria-pressed={city.id===selected.id} className={city.id===selected.id?'selected-choice':''} onClick={()=>{onSelect(city.id);setNcrOpen(true);}}>{city.name}</button>)}</div>}
+
   </section>;
 }
 

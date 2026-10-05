@@ -44,3 +44,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Include Gurugram, Faridabad and Panchkula for Haryana regional data. Keep Chandigarh as its own union territory while explaining its shared-capital role. Pages must deploy the current main commit from dist/client and publish build provenance.
 
 - Remove Panchkula. Delhi NCR alone uses a persistent three-city group marker with a chooser for Delhi, Gurugram and Faridabad; other map locations remain individually selectable. Selecting another city closes the chooser while retaining the NCR group marker.
+
+- NCR chooser uses an × header button (no Close list option). Closing by ×, Escape or toggling the marker selects Delhi. Selecting Gurugram/Faridabad from the list opens the chooser; choosing an NCR city keeps it open and highlights the selected row while updating the side panel.
