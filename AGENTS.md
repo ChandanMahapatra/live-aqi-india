@@ -40,3 +40,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Remove Thane and Gandhinagar from city coverage; keep Pune (user correction). Reduce selected-city/AQI/cigarette sizes and add separation around cigarette method text. Above AQI 150, badge background and text alternate visibly over a slow two-second cycle; reduced motion keeps a filled static badge.
 
 - At 1280 × 800, use a smaller 38px header row and 30px app title; keep the right rail above the history chart with modestly smaller cigarette art and spacing.
+
+- Include Gurugram, Faridabad and Panchkula for Haryana regional data. Keep Chandigarh as its own union territory while explaining its shared-capital role. Pages must deploy the current main commit from dist/client and publish build provenance.

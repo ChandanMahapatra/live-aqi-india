@@ -41,6 +41,9 @@ export const CITIES = [
   { id: 'jammu', name: 'Jammu', lat: 32.7266, lon: 74.857, state: 'IN-JK' },
   { id: 'leh', name: 'Leh', lat: 34.1526, lon: 77.5771, state: 'IN-LA' },
   { id: 'puducherry', name: 'Puducherry', lat: 11.9416, lon: 79.8083, state: 'IN-PY' },
+  { id: 'gurugram', name: 'Gurugram', lat: 28.4595, lon: 77.0266, state: 'IN-HR' },
+  { id: 'faridabad', name: 'Faridabad', lat: 28.4089, lon: 77.3178, state: 'IN-HR' },
+  { id: 'panchkula', name: 'Panchkula', lat: 30.6942, lon: 76.8606, state: 'IN-HR' },
 ];
 
 const API = 'https://air-quality-api.open-meteo.com/v1/air-quality';
