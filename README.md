@@ -6,7 +6,7 @@ A live air-quality dashboard for 44 Indian cities, including major cities and st
 
 ![Air Quality in India dashboard](docs/screenshot.png)
 
-Made with AI, human-assisted: the initial design exploration used GPT Image; the interface and behavior were refined through human feedback. The screenshot is illustrative—the app fetches current values when opened.
+Human designed, made with AI: the initial design exploration used GPT Image; the interface and behavior were refined through human feedback. The screenshot is illustrative—the app fetches current values when opened.
 
 ## Features
 
