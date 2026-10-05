@@ -38,3 +38,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Map refinement: saturated yellow-to-red dots; legend occupies its own row outside map geometry so northern India stays visible. Individual city dots support pointer and keyboard selection without cluster popups. Overlapping hit areas resolve to the closest true coordinate.
 
 - Remove Thane and Gandhinagar from city coverage; keep Pune (user correction). Reduce selected-city/AQI/cigarette sizes and add separation around cigarette method text. Above AQI 150, badge background and text alternate visibly over a slow two-second cycle; reduced motion keeps a filled static badge.
+
+- At 1280 × 800, use a smaller 38px header row and 30px app title; keep the right rail above the history chart with modestly smaller cigarette art and spacing.
