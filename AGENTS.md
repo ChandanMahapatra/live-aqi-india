@@ -48,3 +48,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - NCR chooser uses an × header button (no Close list option). Closing by ×, Escape or toggling the marker selects Delhi. Selecting Gurugram/Faridabad from the list opens the chooser; choosing an NCR city keeps it open and highlights the selected row while updating the side panel.
 
 - Footer credit wording: Human designed, made with AI.
+
+- Disable text selection on map and history-chart labels/controls so double clicks and click-drag interactions do not highlight text.
