@@ -6,7 +6,7 @@ assert.match(html, /<title>Air Quality in India<\/title>/);
 const asset = html.match(/src="([^\"]+\.js)"/);
 assert.ok(asset, 'Built JavaScript entry is required');
 const entry = await readFile('dist/client/' + asset[1].replace(/^\.\//,''),'utf8');
-for(const label of ['Gurugram','Faridabad','Panchkula','AIR, IN CIGARETTES']) assert.ok(entry.includes(label), 'Missing current app content: '+label);
+for(const label of ['Gurugram','Faridabad','Delhi NCR','AIR, IN CIGARETTES']) assert.ok(entry.includes(label), 'Missing current app content: '+label);
 const info={app:'Air Quality in India',commit:process.env.GITHUB_SHA||'local',cityCount:CITIES.length,builtAt:new Date().toISOString()};
 await writeFile('dist/client/build-info.json',JSON.stringify(info,null,2)+'\n');
 console.log('Verified current implementation:',info.commit);

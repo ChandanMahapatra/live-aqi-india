@@ -15,13 +15,21 @@ const heatColor = (value, metric) => {
 };
 
 function CityMap({ selected, onSelect, summary, metric, onMetric }) {
+  const [ncrOpen,setNcrOpen] = useState(false);
+  const ncrTrigger = useRef(null), firstNcrChoice = useRef(null);
+  const ncrCities = CITIES.filter(city=>['delhi','gurugram','faridabad'].includes(city.id));
+  const ncrPoint = project(ncrCities[0]);
+  const isNcr = ncrCities.some(city=>city.id===selected.id);
+  useEffect(()=>{if(ncrOpen)firstNcrChoice.current?.focus();},[ncrOpen]);
+  useEffect(()=>setNcrOpen(false),[selected.id]);
+  const closeNcr = () => {setNcrOpen(false);ncrTrigger.current?.focus();};
   const chosen = project(selected);
   const labelWidth = Math.max(72, selected.name.length * 8 + 16);
   const labelX = Math.min(chosen.x + 17, 795 - labelWidth);
   const selectNearest = event => {
     const svg = event.currentTarget.ownerSVGElement;
     const point = new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse());
-    const nearest = CITIES.reduce((best,city)=>{
+    const nearest = CITIES.filter(city=>!ncrCities.includes(city)).reduce((best,city)=>{
       const p=project(city),distance=Math.hypot(p.x-point.x,p.y-point.y);
       return distance<best.distance?{city,distance}:best;
     },{city:selected,distance:Infinity});
@@ -43,15 +51,21 @@ function CityMap({ selected, onSelect, summary, metric, onMetric }) {
       <g className="state-outlines">{mapData.states.map(state => <path key={state.id} d={state.outline} />)}</g>
       <g className="map-dots">{mapData.states.map(state => <path key={state.id} d={state.dots} style={{fill:heatColor(regionMean(state.id),metric)}} className={state.id === selected.state ? 'state-active' : ''}><title>{state.name}: {display(regionMean(state.id),1)} {metric==='us_aqi'?'AQI':'µg/m³ PM2.5'} · listed-city mean</title></path>)}</g>
       <g className="country-labels" aria-hidden="true">{[['PAKISTAN',69.8,30.8],['CHINA',91.4,33.8],['NEPAL',84.5,28.3],['BHUTAN',90.4,27.5],['BANGLADESH',90.4,23.6],['MYANMAR',96,21.2],['ARABIAN SEA',69.8,15.5],['INDIAN OCEAN',84,7.3]].map(([name,lon,lat])=>{const p=project({lon,lat});return <text key={name} x={p.x} y={p.y} textAnchor="middle">{name}</text>;})}</g>
-      <g className="city-markers">{CITIES.map(city=>{const p=project(city);return <g key={city.id} role="button" tabIndex="0" aria-label={'Select '+city.name} aria-pressed={selected.id===city.id} className="city-map-target" onClick={selectNearest} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onSelect(city.id);}}}><title>{city.name}</title><circle className="city-hit" cx={p.x} cy={p.y} r="8"/><circle cx={p.x} cy={p.y} r="3.8"/></g>;})}</g>
+      <g className="city-markers">{CITIES.filter(city=>!ncrCities.includes(city)).map(city=>{const p=project(city);return <g key={city.id} role="button" tabIndex="0" aria-label={'Select '+city.name} aria-pressed={selected.id===city.id} className="city-map-target" onClick={selectNearest} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onSelect(city.id);}}}><title>{city.name}</title><circle className="city-hit" cx={p.x} cy={p.y} r="8"/><circle cx={p.x} cy={p.y} r="3.8"/></g>;})}</g>
       <g className="map-selected-label" aria-hidden="true">
-        <circle className="selection-frame" cx={chosen.x} cy={chosen.y} r="11"/>
-        <circle className="selected-dot" cx={chosen.x} cy={chosen.y} r="5"/>
+        {!isNcr && <><circle className="selection-frame" cx={chosen.x} cy={chosen.y} r="11"/>
+        <circle className="selected-dot" cx={chosen.x} cy={chosen.y} r="5"/></>}
         <rect className="label-back" x={labelX} y={chosen.y-13} width={labelWidth} height="26"/>
         <text x={labelX+8} y={chosen.y+4}>{selected.name.toUpperCase()}</text>
       </g>
+      <g ref={ncrTrigger} role="button" tabIndex="0" className="city-map-target ncr-marker" aria-label="Choose Delhi NCR city" aria-expanded={ncrOpen} aria-controls="ncr-chooser" onClick={()=>setNcrOpen(value=>!value)} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();setNcrOpen(value=>!value);}}}>
+        <title>Delhi NCR: Delhi, Gurugram, Faridabad</title>
+        {isNcr && <circle className="selection-frame" cx={ncrPoint.x} cy={ncrPoint.y} r="12"/>}
+        <circle cx={ncrPoint.x} cy={ncrPoint.y} r="8"/>
+        <text x={ncrPoint.x} y={ncrPoint.y+3} textAnchor="middle">3</text>
+      </g>
     </svg>
-
+    {ncrOpen && <div id="ncr-chooser" className="map-chooser" role="group" aria-label="Delhi NCR cities" onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();closeNcr();}}}><span>Delhi NCR · nearby cities</span>{ncrCities.map((city,index)=><button ref={index===0?firstNcrChoice:null} key={city.id} type="button" onClick={()=>{onSelect(city.id);closeNcr();}}>{city.name}</button>)}<button type="button" onClick={closeNcr}>Close</button></div>}
   </section>;
 }
 

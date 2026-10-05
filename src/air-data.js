@@ -43,7 +43,6 @@ export const CITIES = [
   { id: 'puducherry', name: 'Puducherry', lat: 11.9416, lon: 79.8083, state: 'IN-PY' },
   { id: 'gurugram', name: 'Gurugram', lat: 28.4595, lon: 77.0266, state: 'IN-HR' },
   { id: 'faridabad', name: 'Faridabad', lat: 28.4089, lon: 77.3178, state: 'IN-HR' },
-  { id: 'panchkula', name: 'Panchkula', lat: 30.6942, lon: 76.8606, state: 'IN-HR' },
 ];
 
 const API = 'https://air-quality-api.open-meteo.com/v1/air-quality';

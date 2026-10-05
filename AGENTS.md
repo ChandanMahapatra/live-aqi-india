@@ -42,3 +42,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - At 1280 × 800, use a smaller 38px header row and 30px app title; keep the right rail above the history chart with modestly smaller cigarette art and spacing.
 
 - Include Gurugram, Faridabad and Panchkula for Haryana regional data. Keep Chandigarh as its own union territory while explaining its shared-capital role. Pages must deploy the current main commit from dist/client and publish build provenance.
+
+- Remove Panchkula. Delhi NCR alone uses a persistent three-city group marker with a chooser for Delhi, Gurugram and Faridabad; other map locations remain individually selectable. Selecting another city closes the chooser while retaining the NCR group marker.
