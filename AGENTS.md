@@ -50,3 +50,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Footer credit wording: Human designed, made with AI.
 
 - Disable text selection on map and history-chart labels/controls so double clicks and click-drag interactions do not highlight text.
+
+- Reserve a city-list scrollbar gutter; align column header and city values with extra right inset. Move smoke pause/resume beneath the cigarette illustration.
+- Initial client-side data fetch shows only one centered SVG cigarette burning down to its filter, with smoke; reduced motion uses a static icon. Errors must reveal the dashboard rather than trap the loader.
+- Use amber themed disclosure dropdowns instead of native OS-highlighted menus. Keep keyboard support and Escape/outside-click dismissal.
+- Remove Dispur, keep Guwahati; add Daman, Diu, Silvassa, Kavaratti and Sri Vijaya Puram to cover the remaining union territories.
+- Keep map legend gradient inline with the metric control; move listed-city/state-average caveat to Data & method. Add category info link, PM2.5 explanation link and underlined cigarette calculation source.

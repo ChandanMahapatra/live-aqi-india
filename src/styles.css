@@ -47,3 +47,27 @@ select{font:inherit;color:var(--ink);background:#1b1209;border:1px solid var(--r
 .chooser-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#bd8957;margin-bottom:4px}.map-chooser .chooser-close{flex:none;display:grid;place-items:center;width:28px;height:28px;min-height:28px;padding:0;font-size:23px;line-height:1;color:#ffce95}.map-chooser .selected-choice{background:#4a2b12;color:#ffe0a7}
 /* Keep map/chart gestures from selecting their labels. */
 .map-panel,.history-panel{-webkit-user-select:none;user-select:none}
+
+/* Reserve a separate gutter for scrollbars; align headings and row values. */
+.city-list{scrollbar-gutter:stable;padding-right:7px}
+.city-row{padding-left:8px;padding-right:10px}
+.city-row span:last-child{flex:none;min-width:32px;text-align:right}
+.city-value-label{padding-left:8px;padding-right:24px}
+.sort-control,.metric-control{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.map-panel{overflow:visible}.map-legend{z-index:6;flex-wrap:wrap;align-items:center}.map-legend .heat-scale{flex:none}
+.theme-select{position:relative;font-size:11px;min-width:60px;text-shadow:none;color:#ffbd7b}
+.theme-select summary{display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;cursor:pointer;background:#1b1007;border:1px solid #96602c;padding:5px 7px;min-height:24px}
+.theme-select summary::-webkit-details-marker{display:none}
+.theme-select summary:focus-visible{outline:2px solid #ffe4a7;outline-offset:2px}
+.theme-options{position:absolute;z-index:20;top:calc(100% + 3px);right:0;min-width:100%;width:max-content;border:1px solid #b8793d;padding:3px;background:#1b1007;box-shadow:0 8px 20px #000b}
+.theme-options button{display:block;width:100%;text-align:left;border:0;background:none;padding:7px 10px;font-size:11px;color:#ffbd7b}
+.theme-options button:hover,.theme-options button:focus-visible,.theme-options button[aria-pressed=true]{background:#ffb45e;color:#211106;text-shadow:none}
+.status-row{display:flex;align-items:center;gap:5px}.info-link{display:grid;place-items:center;flex:none;width:24px;height:24px;text-decoration:none;font-size:16px}
+.smoke-toggle{display:block;background:none;border:0;padding:3px 0 5px;text-decoration:underline;font-size:10px;min-height:24px;color:#dfac78}
+.cigarette-section{margin-top:10px}.cigarette-stack{height:clamp(58px,13cqh,92px)}
+.initial-loader{height:100dvh;display:grid;place-items:center;background:radial-gradient(ellipse,#211409,#0b0704)}
+.initial-loader svg{width:44px;height:165px;overflow:visible;filter:drop-shadow(0 0 5px #ff9d3533)}
+.loading-burn{transform:translateY(38px)}
+@media(prefers-reduced-motion:no-preference){.loading-paper{animation:burn-paper 6s linear infinite}.loading-burn{animation:burn-ember 6s linear infinite}@keyframes burn-paper{0%,10%{y:38px;height:64px}90%,100%{y:102px;height:0px}}@keyframes burn-ember{0%,10%{transform:translateY(38px)}90%,100%{transform:translateY(100px)}}}
+.city-value-label{padding-right:22px}
+.cigarette-stack{height:clamp(50px,11cqh,80px)}

@@ -1,6 +1,6 @@
 # Air Quality in India
 
-A live air-quality dashboard for 44 Indian cities, including major cities and state capitals. Built with React and Vite, with a Departure Mono interface inspired by [AmberConsole](https://github.com/DutchDiederik/AmberConsole).
+A live air-quality dashboard for 48 Indian cities, including major cities and state capitals. Built with React and Vite, with a Departure Mono interface inspired by [AmberConsole](https://github.com/DutchDiederik/AmberConsole).
 
 **[Open the live app →](https://chandanmahapatra.github.io/live-aqi-india/)**
 
@@ -15,19 +15,20 @@ Human designed, made with AI: the initial design exploration used GPT Image; the
 - Switch regional colors between AQI and PM2.5. Yellow-to-red colors represent the mean of available **listed-city** values in each region, not a statewide measurement. Gray means no available city data.
 - View AQI status and PM2.5, PM10, NO₂, SO₂, O₃ and CO concentrations.
 - Inspect hourly AQI history over 24 hours, 7 days or 30 days, with pointer and keyboard readouts.
+- Amber dropdown menus, scrollbar-safe city value columns, AQI health information and linked PM2.5/cigarette sources.
 - See vertical pixel cigarettes with proportional fractions and animated smoke as a rough pollution exposure analogy.
-- Filled unhealthy badges flash slowly above AQI 150. Reduced-motion preferences disable animations; smoke also has a pause control.
+- Filled unhealthy badges flash slowly above AQI 150. Reduced-motion preferences disable animations; smoke also has a pause control beneath the cigarette illustration.
 - Desktop layout fits the viewport, with scrolling in the city list. Smaller screens reflow vertically.
 
 ## Data and interpretation
 
 The browser calls the [Open-Meteo Air Quality API](https://open-meteo.com/en/docs/air-quality-api) without an API key. India values come from **Copernicus CAMS global atmospheric models**, at approximately 45 km resolution. These are model estimates, not direct CPCB station readings. AQI uses the **US EPA scale**, regardless of the city's location. Times are displayed in India Standard Time.
 
-The map summarizes the curated city list. Some regions have one listed city; others have several or none. It is not a continuous pollution heatmap, an area-weighted average, or an official political map. Haryana's region uses Gurugram and Faridabad values. Chandigarh, the shared capital of Haryana and Punjab, remains a separate union territory in the geography. The 44-city list includes Bhubaneswar, Guwahati, Dispur and Pune.
+The map summarizes the curated city list. Some regions have one listed city; others have several or none. It is not a continuous pollution heatmap, an area-weighted average, or an official political map. Haryana's region uses Gurugram and Faridabad values. Chandigarh, the shared capital of Haryana and Punjab, remains a separate union territory in the geography. The 48-city list includes Bhubaneswar, Guwahati and Pune, plus Daman, Diu, Silvassa, Kavaratti and Sri Vijaya Puram, covering all eight union territories.
 
 The cigarette estimate averages the last 24 completed, contiguous hourly PM2.5 values and divides by **22 µg/m³**, following [Berkeley Earth's approximate equivalence](https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/). Missing or stale windows show unavailable. It is a population-level exposure illustration—not cigarettes actually smoked, personal dose, or an individual health prediction. The Data & method dialog explains the calculation and source.
 
-Selected-city results are cached for 15 minutes; Refresh fetches again. The hosted free API is for **noncommercial use** within [Open-Meteo's published limits](https://open-meteo.com/en/terms). Multi-location and historical requests may count as multiple calls. There is no backend or secret API key.
+Air data is fetched live in the browser, not by GitHub Actions or a daily data job. Initial loading shows a single pixel cigarette burning down to its filter (static with reduced motion). The dashboard remains usable if a request fails. Selected-city results are cached in memory for 15 minutes; Refresh fetches again. The hosted free API is for **noncommercial use** within [Open-Meteo's published limits](https://open-meteo.com/en/terms). Multi-location and historical requests may count as multiple calls. There is no backend or secret API key.
 
 ## Development
 

@@ -14,6 +14,30 @@ const heatColor = (value, metric) => {
   return `hsl(${56 - 56*t} 100% 55%)`;
 };
 
+function ThemeSelect({ label, value, options, onChange }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const close = event => { if (!ref.current?.contains(event.target)) ref.current?.removeAttribute('open'); };
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  return <details ref={ref} className="theme-select" onKeyDown={event => { if(event.key === 'Escape') { ref.current.removeAttribute('open'); ref.current.querySelector('summary').focus(); } }}>
+    <summary aria-label={label + ': ' + options.find(option=>option[0]===value)?.[1]}>{options.find(option=>option[0]===value)?.[1]}<span aria-hidden="true">⌄</span></summary>
+    <div className="theme-options" role="group" aria-label={label}>{options.map(([key,text])=><button key={key} type="button" aria-pressed={value===key} onClick={()=>{onChange(key);ref.current.removeAttribute('open');ref.current.querySelector('summary').focus();}}>{text}</button>)}</div>
+  </details>;
+}
+
+function InitialLoader() {
+  return <div className="initial-loader" role="status" aria-label="Loading air quality"><span className="sr-only">Loading air quality…</span>
+    <svg viewBox="0 0 32 120" aria-hidden="true" shapeRendering="crispEdges">
+      <defs><clipPath id="loader-paper"><rect className="loading-paper" x="10" y="38" width="12" height="64"/></clipPath></defs>
+      <g className="loading-burn"><path className="pixel-smoke" d="M14 -9h4v-5h-4v-5h-4v-5h4v-5h4v-5h-4" fill="none" stroke="#c9ba96" strokeWidth="3"/><rect x="10" width="12" height="4" fill="#ff6e35"/></g>
+      <g clipPath="url(#loader-paper)"><rect x="10" y="38" width="12" height="64" fill="#e5dfc8"/><rect x="10" y="38" width="4" height="64" fill="#bdbda9"/></g>
+      <rect x="10" y="102" width="12" height="16" fill="#ffab45"/><rect x="10" y="102" width="4" height="16" fill="#dc8632"/>
+    </svg>
+  </div>;
+}
+
 function CityMap({ selected, onSelect, summary, metric, onMetric }) {
   const [ncrOpen,setNcrOpen] = useState(false);
   const ncrTrigger = useRef(null), firstNcrChoice = useRef(null);
@@ -42,7 +66,7 @@ function CityMap({ selected, onSelect, summary, metric, onMetric }) {
   });
   const regionMean = id => { const values=regional.get(id); return values?.length ? values.reduce((a,b)=>a+b,0)/values.length : undefined; };
   return <section className="map-panel" aria-label="Map of Indian cities">
-    <div className="map-legend"><label>Region color <select aria-label="Map pollutant" value={metric} onChange={event=>onMetric(event.target.value)}><option value="us_aqi">AQI</option><option value="pm2_5">PM2.5</option></select></label><span className="heat-scale"/><span>{metric==='us_aqi'?'0 → 300+ AQI':'0 → 100+ µg/m³'}</span><small>Listed-city mean, not state-wide · gray = no data</small></div>
+    <div className="map-legend"><div className="metric-control"><span>Region color</span><ThemeSelect label="Map pollutant" value={metric} onChange={onMetric} options={[["us_aqi","AQI"],["pm2_5","PM2.5"]]}/></div><span className="heat-scale"/><span>{metric==='us_aqi'?'0 → 300+ AQI':'0 → 100+ µg/m³'}</span></div>
     <svg className="india-map" viewBox="-12 -14 824 748" role="group" aria-label={'Dot map of India with ' + selected.name + ' selected'}>
       <g className="geo-grid" aria-hidden="true">
         {[68,72,76,80,84,88,92,96].map(lon => { const p=project({lon,lat:38}); return <g key={lon}><line x1={p.x} x2={p.x} y1="22" y2="710"/><text x={p.x} y="12" textAnchor="middle">{lon}°E</text></g>; })}
@@ -120,7 +144,7 @@ function MethodDialog({ onClose, cigarette, returnFocusRef }) {
     {cigarette && <p className="method-window">Window: {formatIST(cigarette.start, {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',hour12:false})} – {formatIST(cigarette.end, {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',hour12:false})} IST.</p>}
     <a href="https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/" target="_blank" rel="noreferrer">Read Berkeley Earth’s method ↗</a>
     <hr/><p className="source-note">Air data: <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> / <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus CAMS</a>, approximately 45 km model resolution for India. US AQI scale; this is not official CPCB station AQI.</p>
-    <p className="source-note">Regional color is the mean of available listed-city values within each state, not an area-weighted state estimate. Unavailable regions are muted. City dots show every listed location; choose a city from the sidebar.</p><p className="source-note">Map: <a href="https://www.geoboundaries.org/" target="_blank" rel="noreferrer">geoBoundaries</a> / DataMeet / Election Commission of India, CC BY 2.5 IN. Boundaries follow that dataset.</p>
+    <p className="source-note">Values are fetched directly in your browser on opening the site, choosing a city or refreshing. City details are cached for 15 minutes in this tab. GitHub Actions deploys the site; it does not collect air data.</p><p className="source-note">CAMS combines satellite observations with atmospheric simulations to estimate air quality at each location. These are observation-informed model results, rather than direct readings from a local CPCB monitor. <a href="https://atmosphere.copernicus.eu/global-production-system" target="_blank" rel="noreferrer">How CAMS works ↗</a></p><p className="source-note">Regional color is the mean of available listed-city values within each state, not an area-weighted state estimate. Unavailable regions are muted. City dots show every listed location; choose a city from the sidebar.</p><p className="source-note">Map: <a href="https://www.geoboundaries.org/" target="_blank" rel="noreferrer">geoBoundaries</a> / DataMeet / Election Commission of India, CC BY 2.5 IN. Boundaries follow that dataset.</p>
   </dialog>;
 }
 
@@ -175,6 +199,7 @@ export default function App() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('name');
   const [metric, setMetric] = useState('us_aqi');
+  const [initialLoading, setInitialLoading] = useState(true);
   const [summary, setSummary] = useState(null);
   const [summaryError, setSummaryError] = useState('');
   const [detail, setDetail] = useState(null);
@@ -215,6 +240,10 @@ export default function App() {
     return () => controller.abort();
   }, [selected.id, revision]);
 
+  useEffect(() => {
+    if ((summary || summaryError) && (detail || detailError)) setInitialLoading(false);
+  }, [summary, summaryError, detail, detailError]);
+
   const current = detail?.current;
   const selectedSummary = summary?.[selected.id]?.current;
   const aqi = current?.us_aqi ?? selectedSummary?.us_aqi;
@@ -222,6 +251,8 @@ export default function App() {
   const cigarette = cigarettesPerDay(detail?.hourly, current?.time);
   const openMethod = event => { methodTriggerRef.current=event.currentTarget; setMethodOpen(true); };
   const refresh = () => { detailCache.clear(); setRevision(number => number + 1); };
+
+  if (initialLoading) return <InitialLoader/>;
 
   return <div className={"app-shell "+(!smokeOn?"smoke-paused":"")}><a className="skip-link" href="#main-content">Skip to air quality</a>
     <header className="site-header">
@@ -232,7 +263,7 @@ export default function App() {
       <div className="atlas-grid">
         <aside className="city-panel" aria-label="Indian city readings">
           <label className="search-box"><img className="search-symbol" src={import.meta.env.BASE_URL + "icons/search.svg"} alt="" /><span className="sr-only">Search city</span><input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search city..." autoComplete="off" /></label>
-          <label className="sort-control">Sort <select aria-label="Sort cities" value={sort} onChange={event=>setSort(event.target.value)}><option value="name">City A–Z</option><option value="us_aqi">Highest AQI</option><option value="pm2_5">Highest PM2.5</option></select></label>
+          <div className="sort-control"><span>Sort</span><ThemeSelect label="Sort cities" value={sort} onChange={setSort} options={[["name","City A–Z"],["us_aqi","Highest AQI"],["pm2_5","Highest PM2.5"]]}/></div>
           <div className="city-value-label">{matching.length} cities <span>{sort==='pm2_5'?'PM2.5 · µg/m³':'AQI'}</span></div>
           <div className="city-list" role="group" aria-label="Cities">
             {matching.map(city => { const reading = summary?.[city.id]?.current?.[sort==='pm2_5'?'pm2_5':'us_aqi']; return <button key={city.id} type="button" className={'city-row ' + (city.id === selected.id ? 'active' : '')} aria-pressed={city.id === selected.id} onClick={() => setSelectedId(city.id)}><span>{city.name}</span><span>{isReading(reading) ? Math.round(reading) : '—'}</span></button>; })}
@@ -247,13 +278,13 @@ export default function App() {
           <h1 className={selected.name.length>10?"long-city":""}>{selected.name}</h1><p className="coordinates">{selected.lat.toFixed(4)}° N &nbsp; {selected.lon.toFixed(4)}° E</p>
           <div className="rail-rule"/><h2>AQI</h2>
           <div className="aqi-value" aria-label={isReading(aqi) ? 'AQI ' + Math.round(aqi) : 'AQI unavailable'}>{isReading(aqi) ? Math.round(aqi) : '—'}</div>
-          <div className={'aqi-category tone-' + category.tone + (aqi>150?' status-alert':'')}>{category.label}</div>
-          <dl className="pollutants">{[['PM2.5','pm2_5'],['PM10','pm10'],['NO₂','nitrogen_dioxide'],['SO₂','sulphur_dioxide'],['O₃','ozone'],['CO','carbon_monoxide']].map(([label,key])=><div key={key}><dt>{label}</dt><dd><strong>{display(current?.[key],1)}</strong> <span>µg/m³</span></dd></div>)}</dl>
+          <div className="status-row"><div className={'aqi-category tone-' + category.tone + (aqi>150?' status-alert':'')}>{category.label}</div><a className="info-link" href="https://www.airnow.gov/aqi/aqi-basics/" target="_blank" rel="noreferrer" aria-label={'About ' + category.label + ' air quality'} title="AQI categories and health guidance">ⓘ</a></div>
+          <dl className="pollutants">{[['PM2.5','pm2_5'],['PM10','pm10'],['NO₂','nitrogen_dioxide'],['SO₂','sulphur_dioxide'],['O₃','ozone'],['CO','carbon_monoxide']].map(([label,key])=><div key={key}><dt>{key==='pm2_5'?<a href="https://www.epa.gov/pm-pollution/particulate-matter-pm-basics" target="_blank" rel="noreferrer">{label}</a>:label}</dt><dd><strong>{display(current?.[key],1)}</strong> <span>µg/m³</span></dd></div>)}</dl>
           {detailError && <div className="detail-error" role="alert">{detailError} <button type="button" onClick={refresh}>Retry</button></div>}
           {!detail && !detailError && <p className="detail-loading" role="status">Loading detailed readings…</p>}
           <div className="cigarette-section"><h2>AIR, IN CIGARETTES</h2>
             <div className="cigarette-content"><CigaretteArt amount={cigarette ? Number(cigarette.estimate.toFixed(1)) : undefined}/><div className="cigarette-stat"><strong>{cigarette ? '~' + cigarette.estimate.toFixed(1) : '—'}</strong><span>{cigarette ? 'cigarettes / day' : 'Unavailable'}</span></div></div>
-            <p>{cigarette ? '24h mean PM2.5 ' + cigarette.mean.toFixed(1) + ' µg/m³ ÷ 22' : 'Requires 24 complete hourly PM2.5 values'}</p>
+            <button className="smoke-toggle" type="button" onClick={()=>setSmokeOn(value=>!value)} aria-pressed={smokeOn}>{smokeOn?'Pause smoke':'Resume smoke'}</button><p><a href="https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/" target="_blank" rel="noreferrer">{cigarette ? '24h mean PM2.5 ' + cigarette.mean.toFixed(1) + ' µg/m³ ÷ 22' : 'Requires 24 complete hourly PM2.5 values'}</a></p>
             <div className="method-row"><span>Approximate exposure comparison</span><button type="button" onClick={openMethod}>Method</button></div>
           </div>
         </aside>
@@ -262,7 +293,7 @@ export default function App() {
         {detail ? <HistoryChart hourly={detail.hourly} currentTime={current.time} range={range} cityName={selected.name}/> : <div className="chart-empty">{detailError ? 'History unavailable.' : 'Loading modeled history…'}</div>}
       </section>
     </main>
-    <footer className="site-footer"><span><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> / <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noreferrer">CAMS</a><button type="button" onClick={openMethod}>Data & method</button></span><span className="ai-credit">Human designed, made with AI</span><div><span>Updated {current?.time?formatIST(current.time,{hour:'2-digit',minute:'2-digit',hour12:false})+' IST':'—'}</span><button type="button" onClick={()=>setSmokeOn(value=>!value)} aria-pressed={smokeOn}>{smokeOn?'Pause smoke':'Resume smoke'}</button><button type="button" onClick={refresh}>Refresh</button></div></footer>
+    <footer className="site-footer"><span><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> / <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noreferrer">CAMS</a><button type="button" onClick={openMethod}>Data & method</button></span><span className="ai-credit">Human designed, made with AI</span><div><span>Updated {current?.time?formatIST(current.time,{hour:'2-digit',minute:'2-digit',hour12:false})+' IST':'—'}</span><button type="button" onClick={refresh}>Refresh</button></div></footer>
     {methodOpen && <MethodDialog onClose={() => setMethodOpen(false)} cigarette={cigarette} returnFocusRef={methodTriggerRef}/>}
   </div>;
 }

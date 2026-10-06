@@ -21,7 +21,6 @@ export const CITIES = [
   { id: 'agra', name: 'Agra', lat: 27.1767, lon: 78.0081, state: 'IN-UP' },
   { id: 'bhubaneswar', name: 'Bhubaneswar', lat: 20.2961, lon: 85.8245, state: 'IN-OR' },
   { id: 'guwahati', name: 'Guwahati', lat: 26.1445, lon: 91.7362, state: 'IN-AS' },
-  { id: 'dispur', name: 'Dispur', lat: 26.1433, lon: 91.7898, state: 'IN-AS' },
   { id: 'amaravati', name: 'Amaravati', lat: 16.5131, lon: 80.5165, state: 'IN-AP' },
   { id: 'itanagar', name: 'Itanagar', lat: 27.0844, lon: 93.6053, state: 'IN-AR' },
   { id: 'raipur', name: 'Raipur', lat: 21.2514, lon: 81.6296, state: 'IN-CT' },
@@ -42,6 +41,11 @@ export const CITIES = [
   { id: 'leh', name: 'Leh', lat: 34.1526, lon: 77.5771, state: 'IN-LA' },
   { id: 'puducherry', name: 'Puducherry', lat: 11.9416, lon: 79.8083, state: 'IN-PY' },
   { id: 'gurugram', name: 'Gurugram', lat: 28.4595, lon: 77.0266, state: 'IN-HR' },
+  { id: 'daman', name: 'Daman', lat: 20.3974, lon: 72.8328, state: 'IN-DH' },
+  { id: 'diu', name: 'Diu', lat: 20.7144, lon: 70.9874, state: 'IN-DH' },
+  { id: 'silvassa', name: 'Silvassa', lat: 20.2766, lon: 73.0083, state: 'IN-DH' },
+  { id: 'kavaratti', name: 'Kavaratti', lat: 10.5593, lon: 72.6358, state: 'IN-LD' },
+  { id: 'sri-vijaya-puram', name: 'Sri Vijaya Puram', lat: 11.6234, lon: 92.7265, state: 'IN-AN' },
   { id: 'faridabad', name: 'Faridabad', lat: 28.4089, lon: 77.3178, state: 'IN-HR' },
 ];
 
@@ -75,7 +79,7 @@ export function buildDetailURL(city) {
 export async function requestAir(url, signal) {
   let response;
   try {
-    response = await fetch(url, { signal });
+    response = await fetch(url, { signal: AbortSignal.any([...(signal ? [signal] : []), AbortSignal.timeout(20000)]) });
   } catch (error) {
     if (error.name === 'AbortError') throw error;
     throw new Error('Could not reach Open-Meteo. Check your connection and try again.');
