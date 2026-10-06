@@ -56,3 +56,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Use amber themed disclosure dropdowns instead of native OS-highlighted menus. Keep keyboard support and Escape/outside-click dismissal.
 - Remove Dispur, keep Guwahati; add Daman, Diu, Silvassa, Kavaratti and Sri Vijaya Puram to cover the remaining union territories.
 - Keep map legend gradient inline with the metric control; move listed-city/state-average caveat to Data & method. Add category info link, PM2.5 explanation link and underlined cigarette calculation source.
+
+## Refinements accepted 6 October 2026
+
+- Remove Silvassa; keep Daman and Diu.
+- Right panel must fit at desktop heights of 760px and above. Smaller heights may scroll the right panel. Reduce city/AQI size where needed; keep Unhealthy for sensitive groups on one line.
+- Put pause/resume immediately beneath the cigarette art. Show category info tooltip on pointer hover and keyboard focus, with a native title too.
+- Chart heading order: AQI · Hourly history · city name.

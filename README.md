@@ -1,12 +1,12 @@
 # Air Quality in India
 
-A live air-quality dashboard for 48 Indian cities, including major cities and state capitals. Built with React and Vite, with a Departure Mono interface inspired by [AmberConsole](https://github.com/DutchDiederik/AmberConsole).
+A live air-quality dashboard for 47 Indian cities, including major cities and state capitals. Built with React and Vite, with a Departure Mono interface inspired by [AmberConsole](https://github.com/DutchDiederik/AmberConsole).
 
 **[Open the live app →](https://chandanmahapatra.github.io/live-aqi-india/)**
 
 ![Air Quality in India dashboard](docs/screenshot.png)
 
-Human designed, made with AI: the initial design exploration used GPT Image; the interface and behavior were refined through human feedback. The screenshot shows the latest implemented interface at 1280 × 800, including the current footer credit and NCR interaction. Readings are illustrative—the app fetches current values when opened.
+Human designed, made with AI: the initial design exploration used GPT Image; the interface and behavior were refined through human feedback. The screenshot shows the latest implemented interface at 1280 × 760, including the current footer credit and NCR interaction. Readings are illustrative—the app fetches current values when opened.
 
 ## Features
 
@@ -24,7 +24,7 @@ Human designed, made with AI: the initial design exploration used GPT Image; the
 
 The browser calls the [Open-Meteo Air Quality API](https://open-meteo.com/en/docs/air-quality-api) without an API key. India values come from **Copernicus CAMS global atmospheric models**, at approximately 45 km resolution. These are model estimates, not direct CPCB station readings. AQI uses the **US EPA scale**, regardless of the city's location. Times are displayed in India Standard Time.
 
-The map summarizes the curated city list. Some regions have one listed city; others have several or none. It is not a continuous pollution heatmap, an area-weighted average, or an official political map. Haryana's region uses Gurugram and Faridabad values. Chandigarh, the shared capital of Haryana and Punjab, remains a separate union territory in the geography. The 48-city list includes Bhubaneswar, Guwahati and Pune, plus Daman, Diu, Silvassa, Kavaratti and Sri Vijaya Puram, covering all eight union territories.
+The map summarizes the curated city list. Some regions have one listed city; others have several or none. It is not a continuous pollution heatmap, an area-weighted average, or an official political map. Haryana's region uses Gurugram and Faridabad values. Chandigarh, the shared capital of Haryana and Punjab, remains a separate union territory in the geography. The 47-city list includes Bhubaneswar, Guwahati and Pune, plus Daman, Diu, Kavaratti and Sri Vijaya Puram, covering all eight union territories.
 
 The cigarette estimate averages the last 24 completed, contiguous hourly PM2.5 values and divides by **22 µg/m³**, following [Berkeley Earth's approximate equivalence](https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/). Missing or stale windows show unavailable. It is a population-level exposure illustration—not cigarettes actually smoked, personal dose, or an individual health prediction. The Data & method dialog explains the calculation and source.
 

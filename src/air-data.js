@@ -43,7 +43,6 @@ export const CITIES = [
   { id: 'gurugram', name: 'Gurugram', lat: 28.4595, lon: 77.0266, state: 'IN-HR' },
   { id: 'daman', name: 'Daman', lat: 20.3974, lon: 72.8328, state: 'IN-DH' },
   { id: 'diu', name: 'Diu', lat: 20.7144, lon: 70.9874, state: 'IN-DH' },
-  { id: 'silvassa', name: 'Silvassa', lat: 20.2766, lon: 73.0083, state: 'IN-DH' },
   { id: 'kavaratti', name: 'Kavaratti', lat: 10.5593, lon: 72.6358, state: 'IN-LD' },
   { id: 'sri-vijaya-puram', name: 'Sri Vijaya Puram', lat: 11.6234, lon: 92.7265, state: 'IN-AN' },
   { id: 'faridabad', name: 'Faridabad', lat: 28.4089, lon: 77.3178, state: 'IN-HR' },
